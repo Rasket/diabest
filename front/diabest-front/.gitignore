@@ -1,7 +1,3 @@
-telegram/venv/
-telegram/__pycache__/
-front/node_modules/
-
 .DS_Store
 node_modules
 /dist
