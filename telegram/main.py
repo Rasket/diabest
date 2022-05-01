@@ -2,11 +2,11 @@ import telebot
 import ast
 import time
 import requests
-
+from config import token, password, register_url, confirm_url
 from telebot import types
 
-token='5220811515:AAEpZNfuq8dV_9xG31jZWxayZG4BGb15lKg'
-password="4KJFD893K0-aKAoiu!4k9ipo54"
+token=token
+password=password
 bot=telebot.TeleBot(token)
 
 @bot.message_handler(commands=['start']) #Объявили ветку для работы по команде <strong>number</strong>
@@ -23,7 +23,7 @@ def contact(message):
         keyboard = types.ReplyKeyboardRemove()
         phone = message.contact.phone_number
         #Если присланный объект <strong>contact</strong> не равен нулю
-        r = requests.get('http://127.0.0.1:5555/phone/code/' + message.contact.phone_number, auth=('diabest_bot', password))
+        r = requests.get(register_url + message.contact.phone_number, auth=('diabest_bot', password))
         try:
             data = r.json()
         except Exception as e:
@@ -31,6 +31,6 @@ def contact(message):
             return None
         print(message.contact, data['code']) #Выводим у себя в панели контактные данные. А вообщем можно их, например, сохранить или сделать что-то еще.
         bot.send_message(message.chat.id, 'Твоя ссылка: ' + '\n' +
-        'http://127.0.0.1:8080/registration/{0}&{1}'.format(phone, data['code']), reply_markup=keyboard)
+        confirm_url + '{0}&{1}'.format(phone, data['code']), reply_markup=keyboard)
 bot.polling(none_stop=True, interval=0, timeout=0)
 #https://habr.com/ru/sandbox/149884/
