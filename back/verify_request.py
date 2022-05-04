@@ -29,16 +29,33 @@ async def startup():
     # когда приложение запускается устанавливаем соединение с БД
     await database.connect()
 
+#Client use token to auth, token auto generates on each site enter
+#
+#and has expire time, first token generates after telegram sign up
+#
+#┌─────────────┐         ┌──────────────────────────────┐
+#│ Client      │         │ Server                       │
+#│             ├─────────►                              │
+#│             │         │ Generate token(phone, code,  │
+#│ code, phone ◄─────────┤                              │
+#└─────────────┘         │ salt=time.now())             │
+#                        │                              │
+#                        │ return token                 │
+#                        │                              │
+#                        │ write token in DB            │
+#                        └──────────────────────────────┘
+
+
 def to_bytes(a):
     return bytes(a, 'utf-8')
 
-def sign_link(phone):
+def sign_link(phone): # подпись для сслыки (более длинная)
     phone = to_bytes(phone)
     h = blake2b(digest_size=AUTH_SIZE*3, key=SECRET_KEY)
     h.update(phone + os.urandom(14) + to_bytes(datetime.now().strftime("%m/%d/%Y, %H:%M:%S")))
     return h.hexdigest().encode('utf-8').decode("utf-8")
 
-def sign_token(phone):
+def sign_token(phone): # подпись токена
     phone = to_bytes(phone)
     h = blake2b(digest_size=AUTH_SIZE, key=SECRET_KEY)
     h.update(os.urandom(14) + to_bytes(datetime.now().strftime("%m/%d/%Y, %H:%M:%S")) + phone)
@@ -49,6 +66,7 @@ def verify(phone, sig):
     good_sig = sign(phone)
     return compare_digest(good_sig, sig)
 
+# проверка пришедших данных, подпись токена
 @router.get("/phone/code/{phonenum}")
 async def read_phone_code(phonenum: str, request: Request,
  q: Optional[str] = None, user_agent: Optional[str] = Header(None)):
