@@ -1,14 +1,14 @@
-#Документация к backend части сайта diabest
+# Документация к backend части сайта diabest
 
-##Используемые url-ы
+## Используемые url-ы
 
-###POST
+### POST
 
 1. Регистрация
   /phone/register/{phonenum}
 
 
-###GET
+### GET
 
 1. Проверка кода
   /phone/confirm/{phonenum}/{codenum}
