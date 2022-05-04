@@ -6,6 +6,21 @@ export default {
   }),
   components: {
   },
+  methods: {
+    openCard () { // ccылка на открытие полной страницы
+      this.$router.push({ name: 'SingleCard', params: {id: '1', Image: this.Image, ShortDescription: this.ShortDescription}})
+    }
+  },
+  props: {
+    Image: {
+      String,
+      default: ''
+    },
+    ShortDescription: {
+      String,
+      default: ''
+    }
+  },
   created () {
     console.log(this.$router.currentRoute)
   },
@@ -20,9 +35,9 @@ export default {
 <template lang="pug">
 
 div.container-limits
-  v-img(lazy-src='https://picsum.photos/id/11/10/6' max-height='300' max-width='250' src='https://picsum.photos/id/11/500/300')
-  span 'Те1кст'
-  a 'сСЫЛКА'
+  v-img(max-height='300' max-width='250' v-bind:src="Image")
+  a
+    span(v-on:click="openCard") {{ ShortDescription }}
 </template>
 
 

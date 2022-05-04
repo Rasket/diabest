@@ -12,9 +12,6 @@ export default {
     console.log(this.$router.currentRoute)
   },
   computed: {
-    isHeaderNeed () {
-      return !(this.$router.currentRoute.name === 'Registration')
-    }
   }
 };
 </script>
@@ -22,12 +19,10 @@ export default {
 <template lang="pug">
 
 v-app
-  HeaderView(v-bind:isHeaderNeed="isHeaderNeed").mb-6
+  HeaderView().mb-6
   v-main
     router-view
 
-  v-footer(app='')
-    img(:src="require('./assets/special_force.png')" :width="256")
 
 
 </template>

@@ -18,7 +18,7 @@ def start_message(message):
     bot.send_message(message.chat.id, 'Номер телефона', reply_markup=keyboard) #Дублируем сообщением о том, что пользователь сейчас отправит боту свой номер телефона (на всякий случай, но это не обязательно)
 
 @bot.message_handler(content_types=['contact']) #Объявили ветку, в которой прописываем логику на тот случай, если пользователь решит прислать номер телефона :)
-def contact(message):
+def contact(message): # в ответ на шейринг контактов дает ссылыку на регу
     if message.contact is not None:
         keyboard = types.ReplyKeyboardRemove()
         phone = message.contact.phone_number

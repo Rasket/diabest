@@ -3,17 +3,38 @@ import VueRouter from 'vue-router'
 import RegistrationPage from '../components/RegistrationPage.vue'
 import IndexView from '../components/IndexView.vue'
 import ProductCard from '../views/ProductCard.vue'
+import ProfileView from '../views/ProfileView.vue'
+import SingleCardView from '../views/SingleCardView.vue'
+import WikiView from '../views/WikiView.vue'
+
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/registration/',
+    path: '/registration/', // legacy
     name: 'Registration',
     component: RegistrationPage
   },
   {
-    path: '/',
+    path: '/product/:id', // карточка продукта
+    name: 'SingleCard',
+    component: SingleCardView,
+    props: true
+  },
+  {
+    path: '/profile/', // профиль пользователя
+    name: 'Profile',
+    component: ProfileView
+  },
+  {
+    path: '/:phoneProp&:codeProp', // ссылка на регистрацию
+    name: 'IndexViewProps',
+    component: IndexView,
+    props: true
+  },
+  {
+    path: '/', // главная страница
     name: 'IndexView',
     component: IndexView
   },
@@ -21,6 +42,12 @@ const routes = [
     path: '/registration/:phoneProp&:codeProp',
     name: 'RegistrationProps',
     component: RegistrationPage,
+    props: true
+  },
+  {
+    path: '/wiki/', // wiki
+    name: 'WikiView',
+    component: WikiView,
     props: true
   },
   {
@@ -32,7 +59,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
   },
   {
-    path: '/pcard/',
+    path: '/pcard/', // test
     name: 'ProductCard',
     component: ProductCard,
   },]
