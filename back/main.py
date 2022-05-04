@@ -1,6 +1,7 @@
 from typing import Optional
 from fastapi import FastAPI, Request, Header, status, HTTPException
 from verify_request import api_router
+from cards import api_router_a
 import databases
 import random
 from models.phonecode import phonecode_table
@@ -18,13 +19,15 @@ database = databases.Database(SQLALCHEMY_DATABASE_URL)
 
 app = FastAPI()
 app.include_router(api_router)
+app.include_router(api_router_a)
 
 from fastapi.middleware.cors import CORSMiddleware
-
+# разрешенные урлы
 origins = [
     "http://localhost",
     "http://localhost:8080/*",
-    "http://127.0.0.1:5000/phone/register/*"
+    "http://127.0.0.1:5000/phone/register/*",
+    "http://127.0.0.1:5000/*"
 ]
 
 app.add_middleware(
@@ -34,12 +37,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-def generate_phone_code():
-    code = ""
-    for i in range(0, 6):
-        code += str(random.randint(0, 9))
-    return code
 
 @app.on_event("startup")
 async def startup():
@@ -57,6 +54,7 @@ async def read_root():
     query = "SELECT * FROM phonecode"
     return await database.fetch_all(query)
 
+# зарегать или обновить код пользователя
 @app.post("/phone/register/{phonenum}")
 async def read_item(phonenum: str, q: Optional[str] = None):
     phonenum = phonenum[1:]

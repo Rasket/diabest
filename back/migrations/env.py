@@ -4,7 +4,7 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 import sqlalchemy
 from alembic import context
-from models import phonecode
+from models import phonecode, card
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -18,7 +18,7 @@ config.set_section_option(section, "DB_NAME", 'diabest')
 config.set_section_option(section, "DB_HOST", 'localhost')
 
 
-target_metadata = [phonecode.metadata]
+target_metadata = [phonecode.metadata, card.metadata]
 
 fileConfig(config.config_file_name)
 

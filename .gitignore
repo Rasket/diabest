@@ -1,6 +1,10 @@
 telegram/venv/
+back/venv/
 telegram/__pycache__/
 front/node_modules/
+back/migrations/
+back/__pycache__/
+back/models/__pycache__/
 
 .DS_Store
 node_modules

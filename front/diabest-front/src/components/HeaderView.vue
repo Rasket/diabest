@@ -20,10 +20,14 @@
       }
     },
     created () {
-
+      console.log(this.$user.utoken)
     },
     methods: {
+      setFocus () {
+        this.$refs.search.focus()
+      },
       chanegPlac () {
+
       }
     }
   }
@@ -31,19 +35,23 @@
 
 
 <template lang="pug">
-div(v-if="isHeaderNeed")
+div
   v-app-bar(color='#bce08a' dense='' dark='' height='72px')
-    img(:src="require('../assets/special_force.png')" :width="78")
-    .search-box
-      button.btn-search
-        v-icon(color=' 	#a4dad2') mdi-magnify
-        i.fas.fa-search
-      input.input-search(v-on:click="chanegPlac" type='text' v-bind:placeholder="placehld")
+    router-link(to="/").registration
+      img(:src="require('../assets/special_force.png')" :width="78")
+    .search-box(v-on:click="setFocus")
+      button.btn-search(v-on:click="setFocus")
+        v-icon(color='#a4dad2' v-on:click="setFocus") mdi-magnify
+        i.fas.fa-search(v-on:click="setFocus")
+      input.input-search(v-on:click="chanegPlac" type='text' ref="search" v-bind:placeholder="placehld")
     v-spacer
-    v-btn(icon='')
-      v-icon mdi-heart
-
-
+    router-link(to="/wiki/").registration.mx-5 База знаний
+    template(v-if="this.$user.utoken")
+      router-link(to="/profile/")
+        span Профиль
+    a.registration(v-else, href="https://t.me/begegg_bot", target="_blank")
+      h4.mr-2() Зарегистрироваться
+      v-img(max-height='25' max-width='25' src='../assets/telegICO.svg' )
     v-menu(left='' bottom='')
       template(v-slot:activator='{ on, attrs }')
         v-btn(icon='' v-bind='attrs' v-on='on')
@@ -53,6 +61,7 @@ div(v-if="isHeaderNeed")
           v-list-item-title Option {{ n }}
 
 </template>
+
 
 
 <style>
@@ -68,7 +77,8 @@ body{
   position: relative;
 }
 .input-search{
-  height: 40px;
+  height: 40px;  transition: all 750ms;
+
   width: 40px;
   text-align: center;
   border-style: none;
@@ -114,14 +124,18 @@ body{
   border-radius: 0px;
   background-color: transparent;
   border-bottom:1px solid  #2A4480;
-  transition: all 1000ms;
+  transition: all 750ms;
 }
 .input-search:focus{
   width: 600px;
   border-radius: 0px;
   background-color: transparent;
   border-bottom:1px solid  #2A4480;
-  transition: all 1000ms cubic-bezier(0, 0.110, 0.35, 2);
+  transition: all 750ms;
+}
+
+.registration {
+  display: inherit;
 }
 
 
